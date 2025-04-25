@@ -1,5 +1,5 @@
 import { Hono } from 'hono/quick'
-import adminController from './controllers/admin.controller.ts'
+import adminController from '@/apps/cron/controllers/admin.controller.ts'
 
 const app = new Hono()
 

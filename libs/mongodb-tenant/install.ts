@@ -1,4 +1,4 @@
-import { installMongodbConnector } from "./connectors/mongodb.connector.ts";
+import { installMongodbConnector } from "@/libs/mongodb-tenant/connectors/mongodb.connector.ts";
 
 export async function installMongodbTenant() {
     await installMongodbConnector()

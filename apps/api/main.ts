@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
-import catalogController from './controllers/catalog.controller.ts'
-import reservationController from './controllers/reservation.controller.ts'
-import { installMongodbTenant } from "../../libs/mongodb-tenant/install.ts";
+import catalogController from '@/apps/api/controllers/catalog.controller.ts'
+import reservationController from '@/apps/api/controllers/reservation.controller.ts'
+import { installMongodbTenant } from "@/libs/mongodb-tenant/install.ts";
 
 await installMongodbTenant()
 

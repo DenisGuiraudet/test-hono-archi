@@ -1,24 +1,28 @@
-import { type IReservation, Reservation } from "../models/reservation.model.ts";
+import { type IReservation, Reservation } from "@/libs/mongodb-tenant/models/reservation.model.ts";
 
 export const ReservationRepository = {
-  async createReservation(reservationData: Omit<IReservation, '_id'>) {
+  async createReservation(reservationData: Pick<IReservation, 'bookId' | 'userId' | 'startDate' | 'endDate'>): Promise<IReservation> {
     const reservation = new Reservation(reservationData);
-    return await reservation.save();
+    const savedReservation = await reservation.save();
+    return savedReservation.toObject() as IReservation;
   },
 
-  async getReservationById(id: string) {
-    return await Reservation.findById(id);
+  async getReservationById(id: string): Promise<IReservation | null> {
+    const reservation = await Reservation.findById(id).exec();
+    return reservation ? reservation.toObject() as IReservation : null;
   },
 
-  async getAllReservations() {
-    return await Reservation.find();
+  async getAllReservations(): Promise<IReservation[]> {
+    const reservations = await Reservation.find().exec();
+    return reservations.map(reservation => reservation.toObject() as IReservation);
   },
 
-  async updateReservation(id: string, reservationData: Omit<Partial<IReservation>, '_id'>) {
-    return await Reservation.findByIdAndUpdate(id, reservationData, { new: true });
+  async updateReservation(id: string, reservationData: Omit<Partial<IReservation>, '_id'>): Promise<IReservation | null> {
+    const updatedReservation = await Reservation.findByIdAndUpdate(id, reservationData, { new: true });
+    return updatedReservation ? updatedReservation.toObject() as IReservation : null;
   },
 
-  async deleteReservation(id: string) {
-    return await Reservation.findByIdAndDelete(id);
+  async deleteReservation(id: string): Promise<void> {
+    await Reservation.findByIdAndDelete(id);
   }
 } as const
